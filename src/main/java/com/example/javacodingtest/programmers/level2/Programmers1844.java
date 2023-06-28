@@ -3,7 +3,7 @@ package com.example.javacodingtest.programmers.level2;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class GameMapShortestPath {
+public class Programmers1844 {
     // 사방 탐색을 위한 변수
     private final int[] dx = {-1, 1, 0, 0};
     private final int[] dy = {0, 0, -1, 1};
@@ -75,7 +75,7 @@ public class GameMapShortestPath {
         // 2가 시작점 3이 목적지
         // {5, 0} 시작 {0, 5} 도착
         // 실제로는 x가 y 같고 y가 x처럼 움직임
-        int answer = new GameMapShortestPath().solution(new int[][]{
+        int answer = new Programmers1844().solution(new int[][]{
                 {1, 0, 1, 1, 1},
                 {1, 0, 1, 0, 1},
                 {1, 0, 1, 1, 1},
