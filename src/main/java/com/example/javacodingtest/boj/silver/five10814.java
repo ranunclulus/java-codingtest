@@ -21,10 +21,6 @@ public class five10814 {
         }
 
 
-
-        for (int i = 0; i < number; i++) {
-            System.out.println(Arrays.toString(people[i]));
-        }
     }
 
     public static void main(String[] args) throws IOException {
