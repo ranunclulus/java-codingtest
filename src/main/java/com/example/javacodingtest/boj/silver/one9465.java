@@ -26,6 +26,7 @@ public class one9465 {
     }
 
     private int solve(int cols, int[][] stickers) {
+        if (cols == 1) return Math.max(stickers[0][0], stickers[1][0]);
         int[][] dp = new int[2][cols];
         // 첫 번째 배열은 스티커값 그대로
         dp[0][0] = stickers[0][0];
