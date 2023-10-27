@@ -3,10 +3,10 @@ package com.example.javacodingtest.boj.gold;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.StringTokenizer;
+import java.util.ArrayList;
+import java.util.List;
 
 // https://www.acmicpc.net/problem/11404
 public class four11404 {
@@ -45,6 +45,7 @@ public class four11404 {
 
         for (int start = 0; start < cityCount; start++) {
             for (int i = 0; i < cityCount; i++) {
+                if (start == i) continue;
                 int minDist = Integer.MAX_VALUE;
                 int minDistCity = -1;
                 for (int j = 0; j < cityCount; j++) {
@@ -69,7 +70,8 @@ public class four11404 {
 
         for (int[] row : distance) {
             for (int result : row) {
-                sb.append(result);
+                if (result == Integer.MAX_VALUE) sb.append(0);
+                else sb.append(result);
                 sb.append(" ");
             }
             sb.append("\n");
@@ -77,7 +79,7 @@ public class four11404 {
         System.out.println(sb);
 
         reader.close();
-     }
+    }
 
     public static void main(String[] args) throws IOException {
         new four11404().solution();
