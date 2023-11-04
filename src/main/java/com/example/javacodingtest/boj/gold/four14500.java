@@ -55,9 +55,6 @@ public class four14500 {
                     if (fourthCol == col && fourthRow == row) continue;
                     value += map[fourthCol][fourthRow];
                     result = Math.max(result, value);
-//                    System.out.printf("fCol: %d, fRow: %d, sCol: %d, sRow: %d, tCol: %d, tRow: %d, fCol: %d, fRow: %d, result: %d",
-//                            col, row, secondCol, secondRow, thirdCol, thirdRow, fourthCol, fourthRow, result);
-//                    System.out.println();
                     value -= map[fourthCol][fourthRow];
                 }
                 for (int k = 0; k < 4; k++) {
@@ -69,9 +66,6 @@ public class four14500 {
                     if (fourthCol == col && fourthRow == row) continue;
                     value += map[fourthCol][fourthRow];
                     result = Math.max(result, value);
-//                    System.out.printf("fCol: %d, fRow: %d, sCol: %d, sRow: %d, tCol: %d, tRow: %d, fCol: %d, fRow: %d, result: %d",
-//                            col, row, secondCol, secondRow, thirdCol, thirdRow, fourthCol, fourthRow, result);
-//                    System.out.println();
                     value -= map[fourthCol][fourthRow];
                 }
                 value -= map[thirdCol][thirdRow];
