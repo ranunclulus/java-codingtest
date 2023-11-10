@@ -5,75 +5,52 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class three1244 {
+    private String[] numbers;
+    private int answer, switchNum, radix;
+
     public void solution() throws IOException {
         Scanner sc = new Scanner(System.in);
         int testNum = sc.nextInt();
 
         for (int test = 1; test <= testNum; test++) {
-            String rawNumString = sc.next();
-            int radix = rawNumString.length();
-            int switchNum = sc.nextInt();
-            int[] numbers = new int[radix];
-            for (int i = 0; i < radix; i++) {
-                numbers[i] = Integer.parseInt(String.valueOf(rawNumString.charAt(i)));
+            numbers = sc.next().split("");
+            radix = numbers.length;
+            switchNum = sc.nextInt();
+
+            // 자릿수보다 교환 횟수가 클 때 -> 자릿수만큼만 옮겨도 모두 다 이동시킬 수 있음
+            if (radix < switchNum) {
+                switchNum = radix;
             }
 
-            int change = 0;
-            for (int i = 0; i < radix - 1; i++) {
-                int maxIndex = -1;
-                int maxValue = numbers[i];
+            answer = 0;
+            dfs(0, 0);
 
-                for (int j = i + 1; j < radix; j++) {
-                    int index = j % radix;
-                    if (numbers[index] >= maxValue) {
-                        maxIndex = index;
-                        maxValue = numbers[index];
-                    }
-                }
+            System.out.printf("#%d %d\n", test, answer);
+        }
+    }
 
-                if (maxValue > numbers[i]) {
-                    numbers[maxIndex] = numbers[i];
-                    numbers[i] = maxValue;
-                    change++;
-                }
-
-                if (i > 0 && maxIndex != -1) {
-                    if (numbers[i] == numbers[i - 1]) {
-                        int maxSecondIndex = -1;
-                        int maxSecondValue = -1;
-                        for (int j = maxIndex; j < radix; j++) {
-                            if (numbers[j] > maxSecondValue) {
-                                maxSecondIndex = j;
-                                maxSecondValue = numbers[j];
-                            }
-                        }
-                        if (maxSecondIndex != i) {
-                            numbers[maxSecondIndex] = numbers[maxIndex];
-                            numbers[maxIndex] = maxSecondValue;
-                        }
-                    }
-                }
-
-                if (maxIndex == -1 && i == (radix / 2)) {
-                    while (change == switchNum - 1) {
-                        int temp = numbers[i];
-                        numbers[i] = numbers[i - 1];
-                        numbers[i - 1] = temp;
-                        change++;
-                    }
-                    int temp = numbers[radix - 1];
-                    numbers[radix - 1] = numbers[radix - 2];
-                    numbers[radix - 2] = temp;
-                    break;
-                }
-                if (change == switchNum) break;
-            }
-
+    private void dfs(int start, int count) {
+        if (count == switchNum) {
             String result = "";
-            for (int i = 0; i < radix; i++) {
-                result += numbers[i];
+            for (String number : numbers) {
+                result += number;
             }
-            System.out.printf("#%d %s\n", test, result);
+            answer = Math.max(answer, Integer.parseInt(result));
+            return;
+        }
+
+        for (int i = start; i < radix; i++) {
+            for (int j = i + 1; j < radix; j++) {
+                String temp = numbers[j];
+                numbers[j] = numbers[i];
+                numbers[i] = temp;
+
+                dfs(i, count + 1);
+
+                temp = numbers[j];
+                numbers[j] = numbers[i];
+                numbers[i] = temp;
+            }
         }
     }
 
