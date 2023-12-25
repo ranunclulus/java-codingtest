@@ -6,20 +6,19 @@ public class one1546 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int N = sc.nextInt();
-        float[] record = new float[N];
-        float max = 0;
-        float avg = 0;
+        int A[] = new int[N];
 
-        for(int i=0; i<record.length; i++) {
-            record[i] = sc.nextInt();
-            if(record[i]>max) {
-                max = record[i];
-            }
+        for (int i = 0; i < N; i++) {
+            A[i] = sc.nextInt();
         }
 
-        for(int j=0; j<record.length; j++) {
-            avg += (record[j]/max*100)/N;
+        long sum = 0;
+        long max = 0;
+
+        for (int i = 0; i < N; i++) {
+            if (max < A[i]) max = A[i];
+            sum += A[i];
         }
-        System.out.println(avg);
+        System.out.println(sum * 100.0 / max / N);
     }
 }
