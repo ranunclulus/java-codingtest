@@ -17,8 +17,7 @@ public class four1987 {
         if (visit[map[x][y]]) {
             ans = Math.max(count, ans);
             return;
-        }
-        else {
+        } else {
             visit[map[x][y]] = true;
             for (int i = 0; i < 4; i++) {
                 int cx = x + dx[i];
@@ -47,6 +46,8 @@ public class four1987 {
         }
 
         dfs(0, 0, 0);
+
+        if (r == 1 && c == 1) ans = 1;
 
         System.out.println(ans);
     }
