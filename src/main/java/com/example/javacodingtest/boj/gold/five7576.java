@@ -9,8 +9,9 @@ import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class five7576 {
-    int[] dRow = new int[] {0, 0, 1, -1};
-    int[] dCol = new int[] {1, -1, 0, 0};
+    int[] dRow = new int[]{0, 0, 1, -1};
+    int[] dCol = new int[]{1, -1, 0, 0};
+
     public void solution() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer infoToken = new StringTokenizer(reader.readLine());
@@ -23,14 +24,14 @@ public class five7576 {
             StringTokenizer tomatoToken = new StringTokenizer(reader.readLine());
             for (int j = 0; j < colNum; j++) {
                 tomato[i][j] = Integer.parseInt(tomatoToken.nextToken());
-                if (tomato[i][j] == 1) toVisit.offer(new int[] {i, j});
+                if (tomato[i][j] == 1) toVisit.offer(new int[]{i, j});
             }
         }
 
         int time = 0;
         boolean[][] visited = new boolean[rowNum][colNum];
 
-        while(!toVisit.isEmpty()) {
+        while (!toVisit.isEmpty()) {
             time++;
             int repeatNum = toVisit.size();
             for (int index = 0; index < repeatNum; index++) {
