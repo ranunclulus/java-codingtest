@@ -1,29 +1,24 @@
 package com.example.javacodingtest.boj.gold;
 
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.util.*;
 
 class Fish {
-    int value;
+    int col;
+    int row;
+    int number;
     int direction;
+    boolean isAlive;
 
-    public Fish(int value, int direction) {
-        this.value = value;
+    public Fish(int col, int row, int number, int direction, boolean isAlive) {
+        this.col = col;
+        this.row = row;
+        this.number = number;
         this.direction = direction;
-    }
-
-    public void die() {
-        this.direction = -1;
-    }
-
-    @Override
-    public String toString() {
-        return "{" +
-                "value=" + value +
-                ", direction=" + direction +
-                "}       ";
+        this.isAlive = isAlive;
     }
 }
 
@@ -31,21 +26,13 @@ class Shark {
     int col;
     int row;
     int direction;
-    int kill;
+    int eatSum;
 
-    public Shark(int col, int row, int direction, int kill) {
+    public Shark(int col, int row, int direction, int eatSum) {
         this.col = col;
         this.row = row;
         this.direction = direction;
-        this.kill = kill;
-    }
-
-    @Override
-    public String toString() {
-        return "Shark{" +
-                "col=" + col +
-                ", row=" + row +
-                "}";
+        this.eatSum = eatSum;
     }
 }
 
@@ -53,90 +40,119 @@ public class two19236 {
     // 1부터 순서 대로 ↑, ↖, ←, ↙, ↓, ↘, →, ↗
     public int[] dCol = {-1, -1, 0, 1, 1, 1, 0, -1};
     public int[] dRow = {0, -1, -1, -1, 0, 1, 1, 1};
-    public Fish[][] map;
-    public Shark shark;
+    public int maxSum;
+
 
     public void solution() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        map = new Fish[4][4];
+        List<Fish> fishes = new ArrayList<>();
+        int[][] map = new int[4][4];
 
         for (int i = 0; i < 4; i++) {
-            StringTokenizer sharkToken = new StringTokenizer(reader.readLine());
+            StringTokenizer infoToken = new StringTokenizer(reader.readLine());
             for (int j = 0; j < 4; j++) {
-                int value = Integer.parseInt(sharkToken.nextToken());
-                int direction = Integer.parseInt(sharkToken.nextToken()) - 1;
-                map[i][j] = new Fish(value, direction);
+                int number = Integer.parseInt(infoToken.nextToken());
+                int direction = Integer.parseInt(infoToken.nextToken()) - 1;
+                fishes.add(new Fish(i, j, number, direction, true));
+                map[i][j] = number;
             }
         }
 
-        // 상어는 (0,0) 물고기를 먹고 시작함
-        shark = new Shark(0, 0, map[0][0].direction, map[0][0].value);
-        map[0][0].die();
-
-        // 물고기들 이동
-        move();
-
-        // 상어의 이동 ---? 최대가 되게 하는 상어의 이동...
-
-        // print
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                System.out.print(map[i][j].toString());
+        Collections.sort(fishes, new Comparator<Fish>() {
+            @Override
+            public int compare(Fish o1, Fish o2) {
+                return o1.number - o2.number;
             }
-            System.out.println();
+        });
+
+        // 상어는 (0, 0) 위치 물고기 먹고 시작
+        Fish start = fishes.get(map[0][0] - 1);
+        Shark shark = new Shark(0, 0, start.direction, start.number);
+        start.isAlive = false;
+        map[0][0] = -1;
+
+        dfs(map, shark, fishes);
+        System.out.println(maxSum);
+    }
+
+    // 상어가 이동할 수 없을 때까지 반복
+    private void dfs(int[][] map, Shark shark, List<Fish> fishes) {
+        if (shark.eatSum > maxSum) {
+            maxSum = shark.eatSum;
         }
 
+        fishes.forEach(fish -> moveFish(fish, map, fishes));
+
+        for (int dist = 1; dist < 4; dist++) {
+            int nextCol = shark.col + dCol[shark.direction] * dist;
+            int nextRow = shark.row + dRow[shark.direction] * dist;
+
+            if (nextCol < 0 || nextCol >= 4 || nextRow < 0 || nextRow >= 4) continue;
+            if (map[nextCol][nextRow] <= 0) continue;
+
+            int[][] copyMap = copyMap(map);
+            List<Fish> copyFishes = copyFish(fishes);
+
+            copyMap[shark.col][shark.row] = 0;
+            Fish nextTarget = copyFishes.get(map[nextCol][nextRow] - 1);
+            Shark nextShark = new Shark(nextTarget.col, nextTarget.row, nextTarget.direction, shark.eatSum + nextTarget.number);
+            nextTarget.isAlive = false;
+            copyMap[nextTarget.col][nextTarget.row] = -1;
+
+            dfs(copyMap, nextShark, copyFishes);
+        }
 
     }
 
-    public void move() {
-        // 작은 물고기부터 이동하기
-        for (int number = 1; number <= 16; number++) {
-            boolean finishMove = false;
-            for (int i = 0; i < 4; i++) {
-                if (finishMove) break;
-                for (int j = 0; j < 4; j++) {
-                    // 해당 차례가 되었다면
-                    if (map[i][j].value == number) {
-                        int direction = map[i][j].direction; // 이동할 물고기의 방향
-                        if (direction == -1) {
-                            finishMove = true;
-                            break;
-                        }
-                        int nextCol = 0, nextRow = 0;
-                        // 이동 가능한 지점 찾을 때까지
-                        for (int d = 0; d < 8; d++) {
-                            if (canMove(i, j, (direction + d) % 8)) {
-                                nextCol = i + dCol[(direction + d) % 8];
-                                nextRow = j + dRow[(direction + d) % 8];
-                                break;
-                            }
-                        }
-                        Fish temp = new Fish(map[i][j].value, map[i][j].direction);
-                        map[i][j].value = map[nextCol][nextRow].value;
-                        map[i][j].direction = map[nextCol][nextRow].direction;
-                        map[nextCol][nextRow].value = temp.value;
-                        map[nextCol][nextRow].direction = temp.direction;
-                        finishMove = true;
-                        break;
-                    }
-                }
-            }
+    private List<Fish> copyFish(List<Fish> fishes) {
+        List<Fish> result = new ArrayList<>();
+        for (Fish fish : fishes) {
+            result.add(new Fish(fish.col, fish.row, fish.number, fish.direction, fish.isAlive));
         }
+        return result;
     }
 
-    private boolean canMove(int col, int row, int direction) {
+    private int[][] copyMap(int[][] map) {
+        int[][] result = new int[4][4];
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                result[i][j] = map[i][j];
+            }
+        }
+        return result;
+    }
 
-        int nextCol = col + dCol[direction];
-        int nextRow = row + dRow[direction];
+    private void moveFish(Fish fish, int[][] map, List<Fish> fishes) {
+        if (!fish.isAlive) return;
 
-        // 범위 밖이면 이동 불가능
-        if (nextCol < 0 || nextCol >= 4 || nextRow < 0 || nextRow >= 4) return false;
+        for (int i = 0; i < 8; i++) {
+            int nextDirection = (fish.direction + i) % 8;
+            int nextCol = fish.col + dCol[nextDirection];
+            int nextRow = fish.row + dRow[nextDirection];
 
-        // 상어가 있는 곳이면 이동 불가능
-        if (shark.col == nextCol && shark.row == nextRow) return false;
+            // 범위 밖
+            if (nextCol < 0 || nextCol >= 4 || nextRow < 0 || nextRow >= 4) continue;
+            // 상어가 있는 곳
+            if (map[nextCol][nextRow] == -1) continue;
 
-        return true;
+            map[fish.col][fish.row] = 0;
+            // 이동 가능한 칸이 빈칸이면
+            if (map[nextCol][nextRow] == 0) {
+                fish.col = nextCol;
+                fish.row = nextRow;
+            } else { // 빈칸이 아니라면 교환
+                Fish temp = fishes.get(map[nextCol][nextRow] - 1);
+                temp.col = fish.col;
+                temp.row = fish.row;
+                map[fish.col][fish.row] = temp.number;
+
+                fish.col = nextCol;
+                fish.row = nextRow;
+            }
+            map[nextCol][nextRow] = fish.number;
+            fish.direction = nextDirection;
+            return;
+        }
     }
 
 
