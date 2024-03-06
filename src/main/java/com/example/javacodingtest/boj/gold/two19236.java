@@ -6,37 +6,37 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
-class Fish {
-    int col;
-    int row;
-    int number;
-    int direction;
-    boolean isAlive;
-
-    public Fish(int col, int row, int number, int direction, boolean isAlive) {
-        this.col = col;
-        this.row = row;
-        this.number = number;
-        this.direction = direction;
-        this.isAlive = isAlive;
-    }
-}
-
-class Shark {
-    int col;
-    int row;
-    int direction;
-    int eatSum;
-
-    public Shark(int col, int row, int direction, int eatSum) {
-        this.col = col;
-        this.row = row;
-        this.direction = direction;
-        this.eatSum = eatSum;
-    }
-}
-
 public class two19236 {
+    class Fish {
+        int col;
+        int row;
+        int number;
+        int direction;
+        boolean isAlive;
+
+        public Fish(int col, int row, int number, int direction, boolean isAlive) {
+            this.col = col;
+            this.row = row;
+            this.number = number;
+            this.direction = direction;
+            this.isAlive = isAlive;
+        }
+    }
+
+    class Shark {
+        int col;
+        int row;
+        int direction;
+        int eatSum;
+
+        public Shark(int col, int row, int direction, int eatSum) {
+            this.col = col;
+            this.row = row;
+            this.direction = direction;
+            this.eatSum = eatSum;
+        }
+    }
+
     // 1부터 순서 대로 ↑, ↖, ←, ↙, ↓, ↘, →, ↗
     public int[] dCol = {-1, -1, 0, 1, 1, 1, 0, -1};
     public int[] dRow = {0, -1, -1, -1, 0, 1, 1, 1};
