@@ -16,6 +16,6 @@ public class two3765 {
     }
 
     public static void main(String[] args) throws Exception {
-        new Main().solution();
+        new two3765().solution();
     }
 }
