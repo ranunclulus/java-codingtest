@@ -1,51 +1,66 @@
 package com.example.javacodingtest.programmers.level1;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class Programmers258712 {
 
     public int solution(String[] friends, String[] gifts) {
-        List<List<Integer>> giftRecords = new ArrayList<>();
-        int[] scores = new int[friends.length];
-        for (int i = 0; i < friends.length; i++) {
-            giftRecords.add(new ArrayList<>());
-        }
-
+        int[][] giftsRecord = new int[friends.length][friends.length];
+        int[] giveCnt = new int[friends.length];
+        int[] takeCnt = new int[friends.length];
         for (String gift : gifts) {
-            String[] input = gift.split(" ");
-            String give = input[0];
-            String take = input[1];
+            String[] giveAndTake = gift.split(" ");
+            String give = giveAndTake[0];
+            String take = giveAndTake[1];
 
             int giveIndex = -1;
             for (int i = 0; i < friends.length; i++) {
                 if (friends[i].equals(give)) {
                     giveIndex = i;
+                    giveCnt[giveIndex]++;
                     break;
                 }
             }
+
             int takeIndex = -1;
             for (int i = 0; i < friends.length; i++) {
                 if (friends[i].equals(take)) {
                     takeIndex = i;
+                    takeCnt[takeIndex]++;
                     break;
                 }
             }
-            giftRecords.get(giveIndex).add(takeIndex);
 
-            scores[giveIndex]--;
-            scores[takeIndex]++;
+            giftsRecord[giveIndex][takeIndex]++;
         }
 
-        int[] nextGifts = new int[friends.length];
+        int[] nextGift = new int[friends.length];
 
+        for (int i = 0; i < friends.length - 1; i++) {
+            for (int j = i + 1; j < friends.length; j++) {
+                if (giftsRecord[i][j] == giftsRecord[j][i]) {
+                    int iPoint = giveCnt[i] - takeCnt[i];
+                    int jPoint = giveCnt[j] - takeCnt[j];
+                    if (giftsRecord[i][j] != 0 && giftsRecord[j][i] != 0 && iPoint == jPoint) continue;
+                    else if (iPoint > jPoint) {
+                        nextGift[i]++;
+                    } else if (iPoint < jPoint) {
+                        nextGift[j]++;
+                    }
+                } else if (giftsRecord[i][j] != giftsRecord[j][i]) {
+                    if (giftsRecord[i][j] > giftsRecord[j][i]) {
+                        nextGift[i]++;
+                    } else if (giftsRecord[i][j] < giftsRecord[j][i]) {
+                        nextGift[j]++;
+                    }
+                }
+            }
+        }
+
+        int answer = 0;
         for (int i = 0; i < friends.length; i++) {
-
+            if (answer < nextGift[i]) answer = nextGift[i];
         }
-
-        System.out.println(Arrays.toString(scores));
-        return 0;
+        return answer;
     }
 
     public static void main(String[] args) {
