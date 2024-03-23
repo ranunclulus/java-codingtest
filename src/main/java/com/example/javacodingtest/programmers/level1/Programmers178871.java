@@ -1,28 +1,25 @@
 package com.example.javacodingtest.programmers.level1;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Programmers178871 {
     public String[] solution(String[] players, String[] callings) {
-        String[] answer = new String[players.length];
+        Map<String, Integer> participants = new HashMap<>();
         for (int i = 0; i < players.length; i++) {
-            answer[i] = players[i];
+            participants.put(players[i], i);
         }
 
         for (String call : callings) {
-            int index = -1;
-            // 인덱스 찾기
-            for (int i = 0; i < players.length; i++) {
-                if (answer[i].equals(call)) {
-                    index = i;
-                    break;
-                }
-            }
-            String temp = answer[index];
-            answer[index] = answer[index - 1];
-            answer[index - 1] = temp;
+            int rank = participants.get(call);
+            String temp = players[rank - 1];
+            players[rank - 1] = players[rank];
+            players[rank] = temp;
+            participants.put(call, rank - 1);
+            participants.put(temp, rank);
         }
-        return answer;
+        return players;
     }
 
     public static void main(String[] args) {
