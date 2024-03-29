@@ -4,6 +4,8 @@ public class Programmers161989 {
     public int solution(int n, int m, int[] section) {
         int answer = 0;
         boolean[] colored = new boolean[section.length];
+        String now = "05:13";
+        int nowClock = Integer.parseInt(now.substring(0, 1));
 
         for (int i = 0; i < section.length; i++) {
             if (colored[i]) continue;
