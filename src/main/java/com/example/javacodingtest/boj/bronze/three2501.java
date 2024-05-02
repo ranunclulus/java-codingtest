@@ -18,6 +18,7 @@ public class three2501 {
             }
             if (count == k) {
                 result = i;
+                break;
             }
         }
 
