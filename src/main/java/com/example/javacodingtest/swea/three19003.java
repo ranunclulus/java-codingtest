@@ -9,6 +9,7 @@ public class three19003 {
     public static int n;
     public static int m;
     public static String[] words;
+
     public static int[] reverse;
 
     public static void main(String[] args) throws IOException {
