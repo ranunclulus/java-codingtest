@@ -11,8 +11,7 @@ public class three2193 {
     public void solution() throws IOException {
         Scanner sc = new Scanner(System.in);
         n = sc.nextInt();
-        answer = new long[n + 1];
-        answer[0] = 0;
+        answer = new long[91];
         answer[1] = 1;
         answer[2] = 1;
         for (int i = 3; i <= n; i++) {
