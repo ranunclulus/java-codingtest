@@ -18,6 +18,6 @@ public class three2921 {
     }
 
     public static void main(String[] args) throws Exception {
-        new Main().solution();
+        new three2921().solution();
     }
 }
