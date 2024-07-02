@@ -11,32 +11,30 @@ public class five1251 {
     public void solution() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String input = reader.readLine();
-        int size = input.length() - 1;
+        int size = input.length();
+        List<String> answerList = new ArrayList<>();
 
-        List<String> answer = new ArrayList<>();
-        for (int i = 0; i < size - 1; i++) {
-            String result = "";
-            String one = input.substring(0, i);
-            for (int j = one.length() - 1; j >= 0; j--) {
-                result += one.charAt(j);
-            }
+        for (int i = 0; i < size - 2; i++) {
+            String one = input.substring(0, i + 1);
+            for (int j = i + 1; j < size - 1; j++) {
+                String two = input.substring(i + 1, j + 1);
+                String three = input.substring(j + 1, size);
 
-            for (int j = i + 1; j <= size; j++) {
-                String ans = result;
-                String two = input.substring(i, j);
+                String answer = "";
+                for (int k = one.length() - 1; k >= 0; k--) {
+                    answer += one.charAt(k);
+                }
                 for (int k = two.length() - 1; k >= 0; k--) {
-                    ans += two.charAt(k);
+                    answer += two.charAt(k);
                 }
-                String three = input.substring(j);
                 for (int k = three.length() - 1; k >= 0; k--) {
-                    ans += three.charAt(k);
+                    answer += three.charAt(k);
                 }
-                answer.add(ans);
+                answerList.add(answer);
             }
         }
-
-        Collections.sort(answer);
-        System.out.println(answer.get(0));
+        Collections.sort(answerList);
+        System.out.println(answerList.get(0));
     }
 
     public static void main(String[] args) throws IOException {
