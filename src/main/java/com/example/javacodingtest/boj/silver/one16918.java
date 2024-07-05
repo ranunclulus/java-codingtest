@@ -1,3 +1,5 @@
+package com.example.javacodingtest.boj.silver;
+
 import java.io.*;
 import java.util.ArrayDeque;
 import java.util.Deque;
