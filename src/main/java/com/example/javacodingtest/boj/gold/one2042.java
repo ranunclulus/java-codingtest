@@ -54,7 +54,7 @@ public class one2042 {
     }
 
     private long query(long[] tree, int node, int start, int end, int left, int right) {
-        if (left > end || right < start) {
+        if (end < left || right < start) {
             return 0;
         } else if (left <= start && end <= right) {
             return tree[node];
