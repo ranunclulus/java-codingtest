@@ -1,1 +1,1 @@
-# java-codingtest
+# 자바로 준비하는 알고리즘
