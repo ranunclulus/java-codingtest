@@ -1,7 +1,6 @@
 package com.example.javacodingtest.boj.gold;
 
 import java.io.BufferedReader;
-import java.io.DataOutput;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
@@ -48,7 +47,7 @@ public class five10472 {
                 int[] newMap = current[0].clone();
                 int[] newIsFliped = current[1].clone();
 
-                for (int flip : filps.get(i)) { // 뒤집기
+                for (int flip : filps.get(i)) { // 뒤집기s
                     newMap[flip] = newMap[flip] == 0 ? 1 : 0;
                 }
 
