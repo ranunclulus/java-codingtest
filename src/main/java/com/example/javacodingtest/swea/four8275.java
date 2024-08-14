@@ -6,7 +6,7 @@ import java.util.*;
 /*
  @author ranuinclulus
  @since 2024.08.13
- @link https://swexpertacademy.com/main/solvingProblem/solvingProblem.do
+ @link
  @timecomplex
  @performance 30748 304
  @category #dfs
