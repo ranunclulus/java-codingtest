@@ -53,7 +53,7 @@ public class five1759 {
             return;
         }
 
-        if (start == n ) return;
+        if (start == n) return;
 
         ans[depth] = chars[start];
         combination(start + 1, depth + 1);
