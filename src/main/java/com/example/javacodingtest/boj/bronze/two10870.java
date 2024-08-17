@@ -1,7 +1,7 @@
 package com.example.javacodingtest.boj.bronze;
 
 import java.io.*;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /*
  @author ranuinclulus
