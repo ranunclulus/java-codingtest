@@ -1,4 +1,4 @@
-package boj;
+package com.example.javacodingtest.boj.gold;
 
 import java.io.*;
 import java.util.StringTokenizer;
