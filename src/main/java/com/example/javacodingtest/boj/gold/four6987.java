@@ -1,6 +1,5 @@
 package com.example.javacodingtest.boj.gold;
 
-package boj;
 
 import java.io.*;
 import java.util.ArrayList;
