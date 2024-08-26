@@ -1,14 +1,17 @@
 package com.example.javacodingtest.boj.gold;
 
 import java.io.*;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 /*
  @author ranuinclulus
- @since 2024.08.25
+ @since 2024.08.26
  @link https://www.acmicpc.net/problem/19942
  @timecomplex
- @performance
+ @performance 18748 KB, 152 MS
  @category
  @note
  */
@@ -28,9 +31,28 @@ public class four19942 {
             this.c = c;
         }
     }
+
+    class Node implements Comparable<Node> {
+        int cost;
+        String result;
+
+        public Node(int cost, String result) {
+            this.cost = cost;
+            this.result = result;
+        }
+
+        @Override
+        public int compareTo(Node o) {
+            if (this.cost == o.cost) {
+                return this.result.compareTo(o.result);
+            }
+            return this.cost - o.cost;
+        }
+    }
+
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-    static StringBuilder sb = new StringBuilder();
+    static StringBuilder sb;
     static StringTokenizer st;
     static int n;
     static Food[] foods;
@@ -39,8 +61,7 @@ public class four19942 {
     static int ms;
     static int mv;
     static int mc = Integer.MAX_VALUE;
-    static int result = Integer.MAX_VALUE;
-    static boolean success;
+    static List<Node> candidate = new LinkedList<>();
 
     public void solution() throws IOException {
         n = Integer.parseInt(br.readLine());
@@ -60,14 +81,15 @@ public class four19942 {
         }
 
         recursive(0, 0);
-        if (success) {
-            sb.append(mc).append('\n');
-            for (int i = 0; i < n; i++) {
-                if ((result & (1 << i)) > 0) {
-                    sb.append(i + 1).append(' ');
-                }
-            }
-        } else sb.append(-1);
+        Collections.sort(candidate);
+
+        sb = new StringBuilder();
+        if (candidate.isEmpty()) {
+            sb.append(-1);
+        } else {
+            sb.append(candidate.get(0).cost).append('\n').append(candidate.get(0).result);
+        }
+
         bw.write(sb.toString());
         bw.flush();
     }
@@ -99,8 +121,13 @@ public class four19942 {
         if (totalP < mp || totalF < mf || totalS < ms || totalV < mv) return;
         if (totalC <= mc) {
             mc = totalC;
-            if (check < result) result = check;
-            success = true;
+            sb = new StringBuilder();
+            for (int i = 0; i < n; i++) {
+                if ((check & (1 << i)) > 0) {
+                    sb.append(i + 1).append(' ');
+                }
+            }
+            candidate.add(new Node(mc, sb.toString()));
         }
     }
 
@@ -109,16 +136,3 @@ public class four19942 {
     }
 }
 
-// 1 0 0 0 0 0
-// 1 0 1 1 0 0 -> 3 4 6
-// 0 0 1 1 1 0 -> 2 3 4
-
-/*
-3
-0 0 0 1
-0 0 0 0 0
-0 0 0 0 0
-0 0 0 1 0
-
-1 2 3 나와야 하는데 3 나옴
- */
