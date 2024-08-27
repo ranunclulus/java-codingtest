@@ -1,25 +1,36 @@
 package com.example.javacodingtest.boj.gold;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+/*
+ @author ranuinclulus
+ @since 2024.08.28
+ @link https://www.acmicpc.net/problem/15683
+ @timecomplex
+ @performance 40668 KB	344 MS
+ @category
+ @note
+ */
+
 public class five13023 {
-    int answer = 0;
-    int n;
-    int m;
-    List<Integer>[] relationships;
-    boolean[] visited;
-    int[] distance;
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    static StringTokenizer st;
+    static StringBuilder sb = new StringBuilder();
+    static private int answer = 0;
+    static private int n;
+    static private int m;
+    static private List<Integer>[] relationships;
+    static private boolean[] visited;
+    static private int[] distance;
 
     public void solution() throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer infoToken = new StringTokenizer(reader.readLine());
-        n = Integer.parseInt(infoToken.nextToken());
-        m = Integer.parseInt(infoToken.nextToken());
+        st = new StringTokenizer(br.readLine());
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
 
         relationships = new List[n];
         for (int i = 0; i < n; i++) {
@@ -27,9 +38,9 @@ public class five13023 {
         }
 
         for (int i = 0; i < m; i++) {
-            infoToken = new StringTokenizer(reader.readLine());
-            int person1 = Integer.parseInt(infoToken.nextToken());
-            int person2 = Integer.parseInt(infoToken.nextToken());
+            st = new StringTokenizer(br.readLine());
+            int person1 = Integer.parseInt(st.nextToken());
+            int person2 = Integer.parseInt(st.nextToken());
             relationships[person1].add(person2);
             relationships[person2].add(person1);
         }
@@ -41,7 +52,9 @@ public class five13023 {
             dfs(i);
         }
 
-        System.out.println(answer);
+        sb.append(answer);
+        bw.write(sb.toString());
+        bw.flush();
     }
 
     private void dfs(int index) {
