@@ -1,4 +1,4 @@
-package swea;
+package com.example.javacodingtest.swea;
 
 import java.io.*;
 import java.util.ArrayDeque;
