@@ -46,36 +46,11 @@ public class four9372 {
                 flights.get(first).add(second);
                 flights.get(second).add(first);
             }
-//
-//            min = 1001;
-//            for (int i = 0; i < n; i++) {
-//                visited = new boolean[n];
-//                count = 0;
-//                bfs(i);
-//            }
             sb.append(n - 1).append('\n');
         }
         bw.write(sb.toString());
         bw.flush();
     }
-
-    private void bfs(int flight) {
-        Deque<int[]> queue = new ArrayDeque<>();
-        queue.add(new int[] {flight, 0});
-        visited[flight] = true;
-
-        while(!queue.isEmpty()) {
-            int[] now = queue.poll();
-            count = now[1];
-            for(int next : flights.get(now[0])) {
-                if (visited[next]) continue;
-                queue.add(new int[] {next, count + 1});
-                visited[next] = true;
-            }
-        }
-        min = Math.min(count * 2, min);
-    }
-
 
     public static void main(String[] args) throws IOException {
         new four9372().solution();
