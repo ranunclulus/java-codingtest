@@ -11,53 +11,41 @@ import java.util.StringTokenizer;
  @since 2024.08.29
  @link
  @timecomplex
- @performance
+ @performance 29640 KB, 216 MB
  @category
  @note
  */
 public class none2383 {
-    //TODO isFull 다시 고민하기
     class Stair {
         int row;
         int col;
         int length;
-        int[] capacities;
 
         public Stair(int row, int col, int length) {
             this.row = row;
             this.col = col;
             this.length = length;
-            this.capacities = new int[length + 1];
-        }
-
-        public void addPerson() {
-            capacities[0]++;
-        }
-
-        public void move() {
-            for (int i = length; i >= 1; i--) {
-                capacities[i] = capacities[i - 1];
-            }
-            capacities[0] = 0;
-        }
-
-        public boolean canUse() {
-            int totalUse = 0;
-            for (int i = 0; i <= length; i++) {
-                totalUse += capacities[i];
-            }
-            return totalUse < MAX_PEOPLE;
         }
     }
     class Person {
         int row;
         int col;
+        int distance;
 
         public Person(int row, int col) {
             this.row = row;
             this.col = col;
+            this.distance = 0;
         }
 
+        @Override
+        public String toString() {
+            return "Person{" +
+                    "row=" + row +
+                    ", col=" + col +
+                    ", distance=" + distance +
+                    '}';
+        }
     }
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -68,7 +56,8 @@ public class none2383 {
     static int testNum;
     static int n;
     static final int MAX_PEOPLE = 3;
-    static List<int[]> distances;
+    static List<Person> stairOne;
+    static List<Person> stairTwo;
     static int minTime;
 
     public void solution() throws IOException {
@@ -104,68 +93,61 @@ public class none2383 {
         usingStair(depth + 1, bitMask | (1 << depth));
     }
 
-    private void calculateDistance(int bitMask) throws IOException {
-        distances = new LinkedList<>();
+    private void calculateDistance(int bitMask) {
+        stairOne = new LinkedList<>();
+        stairTwo = new LinkedList<>();
         for (int i = 0; i < people.size(); i++) {
             Person person = people.get(i);
             if ((bitMask & (1 << i)) == 0) { // 첫 번째 계단 이용
                 Stair stair = stairs.get(0);
-                int distance = Math.abs(person.row - stair.row) + Math.abs(person.col - stair.col);
-                distances.add(new int[] {0, distance});
+                person.distance = Math.abs(person.row - stair.row) + Math.abs(person.col - stair.col);
+                stairOne.add(person);
             } else {
                 Stair stair = stairs.get(1);
-                int distance = Math.abs(person.row - stair.row) + Math.abs(person.col - stair.col);
-                distances.add(new int[] {1, distance});
+                person.distance = Math.abs(person.row - stair.row) + Math.abs(person.col - stair.col);
+                stairTwo.add(person);
             }
         }
-        distances.sort((o1, o2) -> o1[1] - o2[1]);
+        stairOne.sort((o1, o2) -> o1.distance - o2.distance);
+        stairTwo.sort((o1, o2) -> o1.distance - o2.distance);
+
         moveStair();
     }
 
+
     private void moveStair() {
-        int time = 0;
-
-        while (!allClear() || !allEmpty()) {
-            time++;
-            // 시간이 지나면 게단 하나씩 이동하기
-            for (Stair stair : stairs) {
-                stair.move();
-            }
-
-            for(int[] distance : distances) {
-                if (distance[0] == -1) continue;
-                distance[1]--;
-                if (distance[1] == 0) {
-                    if (stairs.get(distance[0]).canUse()) {
-                        stairs.get(distance[0]).addPerson();
-                        distance[0] = -1;
-                        distance[1]++;
-                    } else {
-                        distance[1]++;
-                    }
+        for (int i = 0; i < stairOne.size(); i++) {
+            if (i < MAX_PEOPLE) { // 세 명 미만이면
+                stairOne.get(i).distance += stairs.get(0).length;
+            } else { // 세 명 이상이면
+                if (stairOne.get(i - 3).distance > stairOne.get(i).distance) { // 대기 시간이 발생하는 경우
+                    stairOne.get(i).distance = stairOne.get(i - 3).distance + stairs.get(0).length;
+                } else {
+                    stairOne.get(i).distance += stairs.get(0).length;
                 }
             }
         }
-        minTime = Math.min(minTime, time);
-    }
-
-    // 계단이 모두 비었는지
-    private boolean allEmpty() {
-        for(Stair stair : stairs) {
-            for (int i = 0; i <= stair.length; i++) {
-                if (stair.capacities[i] != 0) return false;
+        for (int i = 0; i < stairTwo.size(); i++) {
+            if (i < MAX_PEOPLE) { // 세 명 미만이면
+                stairTwo.get(i).distance += stairs.get(1).length;
+            } else { // 세 명 이상이면
+                if (stairTwo.get(i - 3).distance > stairTwo.get(i).distance) { // 대기 시간이 발생하는 경우
+                    stairTwo.get(i).distance = stairTwo.get(i - 3).distance + stairs.get(1).length;
+                } else {
+                    stairTwo.get(i).distance += stairs.get(1).length;
+                }
             }
         }
-        return true;
+        calculateMinTime();
     }
 
-    // 모두 -1번 계단을 이용하면 다 통과했다
-    private boolean allClear() {
-        for (int[] distance : distances) {
-            if (distance[0] != -1) return false;
-        }
-        return true;
+    private void calculateMinTime() {
+        int stairOneTime = (!stairOne.isEmpty()) ? stairOne.get(stairOne.size() - 1).distance : 0;
+        int stairTwoTime = (!stairTwo.isEmpty()) ? stairTwo.get(stairTwo.size() - 1).distance : 0;
+        int resultTime = Math.max(stairOneTime, stairTwoTime) + 1;
+        minTime = Math.min(minTime, resultTime);
     }
+
 
     public static void main(String[] args) throws IOException {
         new none2383().solution();
@@ -174,16 +156,13 @@ public class none2383 {
 
 /*
 1
-9
-0 0 0 1 0 0 0 0 0
-0 1 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 8
-7 0 0 0 0 1 0 0 0
-0 0 0 0 0 1 1 0 0
-0 0 0 0 0 0 0 0 0
-1 0 0 0 0 1 0 0 0
-0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0
+6
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+1 0 0 0 0 0
+0 0 0 2 0 4
  */
 
 
