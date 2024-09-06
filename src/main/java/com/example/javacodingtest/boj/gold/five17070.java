@@ -1,12 +1,19 @@
 package com.example.javacodingtest.boj.gold;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
+/*
+ @author ranuinclulus
+ @since 2024.09.05
+ @link https://www.acmicpc.net/problem/17070
+ @timecomplex
+ @performance 280608kb, 512ms
+ @category
+ @note
+ */
 public class five17070 {
     static class Pipe {
         int x;
@@ -21,18 +28,21 @@ public class five17070 {
         }
     }
 
-    int[][] board;
-    int n;
-    int count = 0;
+    static int[][] board;
+    static int n;
+    static int count = 0;
+    static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    static BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
+    static StringBuilder builder = new StringBuilder();
+    static StringTokenizer tokenizer;
 
     public void solution() throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         n = Integer.parseInt(reader.readLine());
         board = new int[n][n];
         for (int i = 0; i < n; i++) {
-            StringTokenizer infoToken = new StringTokenizer(reader.readLine());
+            tokenizer = new StringTokenizer(reader.readLine());
             for (int j = 0; j < n; j++) {
-                board[i][j] = Integer.parseInt(infoToken.nextToken());
+                board[i][j] = Integer.parseInt(tokenizer.nextToken());
             }
         }
         if (board[n - 1][n - 1] == 0) {
@@ -76,7 +86,9 @@ public class five17070 {
             }
         }
 
-        System.out.println(count);
+        builder.append(count);
+        writer.write(builder.toString());
+        writer.flush();
 
     }
 
