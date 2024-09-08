@@ -12,7 +12,7 @@ import java.util.*;
  @category Prim
  @note
  */
-public class three4382 {
+public class three4386 {
     class Edge implements Comparable<Edge> {
         int node;
         double cost;
@@ -89,6 +89,6 @@ public class three4382 {
     }
 
     public static void main(String[] args) throws IOException {
-        new three4382().solution();
+        new three4386().solution();
     }
 }
