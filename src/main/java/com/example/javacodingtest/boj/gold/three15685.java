@@ -5,14 +5,15 @@ import java.util.*;
 
 /*
  @author ranuinclulus
- @since 2024.09.07
+ @since 2024.09.10
  @link https://www.acmicpc.net/problem/15685
  @timecomplex
- @performance
+ @performance 14588kb, 116ms
  @category
  @note
  */
 public class three15685 {
+
 
     static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     static BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -20,9 +21,12 @@ public class three15685 {
     static StringTokenizer tokenizer;
     static int n;
     static int x, y, d, g;
-    static int count;
-    static int[][] deltas = new int[][] {{1, 0}, {0, -1}, {-1, 0}, {0, 1}};
-                                        // 우 상 좌 하
+    static final int RIGHT = 0;
+    static final int UP = 1;
+    static final int LEFT = 2;
+    static final int DOWN = 3;
+    static final int LENGTH = 101;
+    static boolean[][] visited = new boolean[LENGTH][LENGTH];
 
     public void solution() throws IOException {
         n = Integer.parseInt(reader.readLine());
@@ -32,64 +36,55 @@ public class three15685 {
             y = Integer.parseInt(tokenizer.nextToken());
             d = Integer.parseInt(tokenizer.nextToken());
             g = Integer.parseInt(tokenizer.nextToken());
-
-            List<int[]> dragons = new LinkedList<>();
-            dragons.add(new int[] {x, y, d});
-            for (int generation = 1; generation <= g; generation++) {
-                System.out.printf("%d 세대\n", generation);
-                System.out.println("============");
-//                Deque<int[]> toVisitDragons = new ArrayDeque<>();
-//                for (int j = 0; j < dragons.size(); j++) {
-//                    toVisitDragons.add(dragons.get(j));
-//                }
-                int size = dragons.size();
-
-                int nowX = dragons.get(size - 1)[0];
-                int nowY = dragons.get(size - 1)[1];
-                for(int j = 0; j < size; j++) {
-                    int[] dragon = dragons.get(size - 1 - j);
-                    int dragonDirection = dragon[2];
-
-                    int newX = nowX + deltas[dragonDirection][0];
-                    int newY = nowY + deltas[dragonDirection][1];
-                    int newDirection = (dragonDirection + 1) % 4;
-
-                    int[] newDragon = new int[] {newX, newY, newDirection};
-                    if (!dragons.contains(newDragon)) {
-                        dragons.add(newDragon);
-                        nowX = newX;
-                        nowY = newY;
-                    }
-                }
-                printDragon(dragons);
-                System.out.println("============");
-                System.out.println();
-                System.out.println();
-            }
+            draw(x, y, getDirection(d, g));
         }
-        System.out.println();
+        builder.append(countDragonArea());
+        writer.write(builder.toString());
+        writer.flush();
     }
 
-    private void printDragon(List<int[]> dragons) {
-        for(int[] dra : dragons) {
-            String dir = "";
-            switch (dra[2]) {
-                case 0:
-                    dir = "우";
+    private int countDragonArea() {
+        int count = 0;
+        for (int i = 0; i < LENGTH - 1; i++) {
+            for (int j = 0; j < LENGTH - 1; j++) {
+                if (visited[i][j] && visited[i + 1][j] && visited[i][j + 1] && visited[i + 1][j + 1]) count++;
+            }
+        }
+        return count;
+    }
+
+    private void draw(int x, int y, List<Integer> directions) {
+        visited[x][y] = true;
+        for(int direction : directions) {
+            switch (direction) {
+                case RIGHT:
+                    visited[++x][y] = true;
                     break;
-                case 1:
-                    dir = "상";
+                case UP:
+                    visited[x][--y] = true;
                     break;
-                case 2:
-                    dir = "좌";
+                case LEFT:
+                    visited[--x][y] = true;
                     break;
-                case 3:
-                    dir = "하";
+                case DOWN:
+                    visited[x][++y] = true;
                     break;
             }
-            System.out.printf("x: %d, y: %d, direction: %s\n", dra[0], dra[1], dir);
         }
     }
+
+    private List<Integer> getDirection(int d, int g) {
+        List<Integer> directions = new LinkedList<>();
+        directions.add(d);
+        while(g --> 0) {
+            int size = directions.size() - 1;
+            for (int i = size; i >= 0; i--) {
+                directions.add((directions.get(i) + 1) % 4);
+            }
+        }
+        return directions;
+    }
+
 
     public static void main(String[] args) throws IOException {
         new three15685().solution();
