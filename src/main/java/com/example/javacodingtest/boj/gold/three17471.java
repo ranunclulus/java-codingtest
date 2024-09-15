@@ -117,7 +117,6 @@ public class three17471 {
         }
 
         if (!one.connect() || !two.connect()) return;
-
         minDiff = Math.min(minDiff, Math.abs(one.totalPop() - two.totalPop()));
     }
 
