@@ -1,28 +1,43 @@
 package com.example.javacodingtest.boj.gold;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.StringTokenizer;
 
+/*
+ @author ranuinclulus
+ @since 2024.09.30
+ @link
+ @timecomplex
+ @performance 54036kb, 168ms
+ @category DP
+ @note
+ */
 public class three7579 {
+    static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    static BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
+    static StringBuilder builder = new StringBuilder();
+    static StringTokenizer tokenizer;
+    static int n, m, answer;
+    static int[] memories, costs;
+    static int[][] dp;
 
     public void solution() throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer infoToken = new StringTokenizer(reader.readLine());
-        int n = Integer.parseInt(infoToken.nextToken());
-        int m = Integer.parseInt(infoToken.nextToken());
-        int answer = Integer.MAX_VALUE;
+        tokenizer = new StringTokenizer(reader.readLine());
+        n = Integer.parseInt(tokenizer.nextToken());
+        m = Integer.parseInt(tokenizer.nextToken());
+        answer = Integer.MAX_VALUE;
 
-        int[] memories = new int[n];
-        int[] costs = new int[n];
-        int[][] dp = new int[n][100001];
+        memories = new int[n];
+        costs = new int[n];
+        dp = new int[n][100001];
 
-        StringTokenizer memoryToken = new StringTokenizer(reader.readLine());
-        StringTokenizer costToken = new StringTokenizer(reader.readLine());
+        tokenizer = new StringTokenizer(reader.readLine());
         for (int i = 0; i < n; i++) {
-            memories[i] = Integer.parseInt(memoryToken.nextToken());
-            costs[i] = Integer.parseInt(costToken.nextToken());
+            memories[i] = Integer.parseInt(tokenizer.nextToken());
+        }
+        tokenizer = new StringTokenizer(reader.readLine());
+        for (int i = 0; i < n; i++) {
+            costs[i] = Integer.parseInt(tokenizer.nextToken());
         }
 
         for (int i = 0; i < n; i++) {
@@ -39,8 +54,9 @@ public class three7579 {
                 if (dp[i][j] >= m) answer = Math.min(answer, j);
             }
         }
-
-        System.out.println(answer);
+        builder.append(answer);
+        writer.write(builder.toString());
+        writer.flush();
     }
 
     public static void main(String[] args) throws IOException {
