@@ -26,6 +26,7 @@ public class five3421 {
 
     public void solution() throws IOException {
         testNum = Integer.parseInt(br.readLine());
+     
         for (int test = 1; test <= testNum; test++) {
             cnt = 0;
             st = new StringTokenizer(br.readLine());
