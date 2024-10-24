@@ -1,7 +1,6 @@
 package com.example.javacodingtest.boj.silver;
 
 import java.io.*;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 /*
