@@ -9,7 +9,7 @@ import java.util.StringTokenizer;
  @since 2024.10.25
  @link https://www.acmicpc.net/problem/17406
  @timecomplex
- @performance
+ @performance 22976kb 268ms
  @category
  @note
  */
@@ -91,10 +91,7 @@ public class four17406 {
                 arrayCopy[i][j] = array[i][j];
             }
         }
-        System.out.println();
-        for(int[] row : arrayCopy) {
-            System.out.println(Arrays.toString(row));
-        }
+
         for (int i = 0; i < k; i++) {
             Spin now = spins[permutation[i]];
             r = now.r;
@@ -109,7 +106,7 @@ public class four17406 {
                 }
                 // 오른쪽
                 int rightTemp = arrayCopy[r + padding][c + padding];
-                for (int j = r + padding; j > r - padding + 1; j--) {
+                for (int j = r + padding; j > r - padding; j--) {
                     arrayCopy[j][c + padding] = arrayCopy[j - 1][c + padding];
                 }
                 arrayCopy[r - padding + 1][c + padding] = upTemp;
