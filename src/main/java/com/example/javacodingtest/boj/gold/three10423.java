@@ -1,7 +1,6 @@
 package com.example.javacodingtest.boj.gold;
 
 import java.io.*;
-import java.util.Arrays;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
