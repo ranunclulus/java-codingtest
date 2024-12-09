@@ -6,20 +6,20 @@ import java.util.StringTokenizer;
 
 /*
  @author ranuinclulus
- @since 2024.10.16
- @link
+ @since 2024.12.09
+ @link https://www.acmicpc.net/problem/2239
  @timecomplex
- @performance 19344kb, 616ms
+ @performance 19668kb 620ms
  @category
  @note
  */
-public class four2239 {
+public class four2239_2 {
     static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     static BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
     static StringBuilder builder = new StringBuilder();
-    static StringTokenizer tokenizer;
     static int[][] sudoku;
     static boolean flag;
+
 
     public void solution() throws IOException {
         sudoku = new int[9][9];
@@ -57,7 +57,6 @@ public class four2239 {
                 if (!isValid(row, col, i)) continue;
                 sudoku[row][col] = i;
                 backtracking(depth + 1);
-
                 if (flag) return;
                 sudoku[row][col] = 0;
             }
@@ -66,21 +65,23 @@ public class four2239 {
 
     private boolean isValid(int row, int col, int number) {
         for (int i = 0; i < 9; i++) {
-            if (sudoku[row][i] == number || sudoku[i][col] == number) return false;
+            if (sudoku[row][i] == number) return false;
+            if (sudoku[i][col] == number) return false;
         }
 
-        int squareRow = row / 3 * 3;
-        int squareCol = col - col % 3;
+        int squareRow = (row / 3) * 3;
+        int squareCol = col - (col % 3);
 
         for (int i = squareRow; i < squareRow + 3; i++) {
             for (int j = squareCol; j < squareCol + 3; j++) {
                 if (sudoku[i][j] == number) return false;
             }
         }
+
         return true;
     }
 
     public static void main(String[] args) throws IOException {
-        new four2239().solution();
+        new four2239_2().solution();
     }
 }
