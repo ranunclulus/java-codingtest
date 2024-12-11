@@ -88,6 +88,7 @@ public class three16235 {
         builder.append(answer);
         writer.write(builder.toString());
         writer.flush();
+
     }
 
     private void print() {
