@@ -8,22 +8,20 @@ import java.util.*;
  @since 2024.12.10
  @link https://www.acmicpc.net/problem/16235
  @timecomplex
- @performance
+ @performance 298008kb 776ms
  @category
  @note
  */
 public class three16235 {
-    class Tree {
+    class Tree implements Comparable<Tree>{
         int row;
         int col;
         int age;
-        boolean alived;
 
         public Tree(int row, int col, int age) {
             this.row = row;
             this.col = col;
             this.age = age;
-            this.alived = true;
         }
 
         @Override
@@ -32,8 +30,12 @@ public class three16235 {
                     "row=" + row +
                     ", col=" + col +
                     ", age=" + age +
-                    ", alived=" + alived +
                     '}';
+        }
+
+        @Override
+        public int compareTo(Tree o) {
+            return Integer.compare(this.age, o.age);
         }
     }
     static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -43,9 +45,8 @@ public class three16235 {
     static int n, m, k, answer;
     static int[][] map;
     static int[][] s2d2;
-    static int[][] treeCount;
     static int[][] deltas = new int[][] {{1, 0}, {-1, 0}, {0, 1}, {0, -1}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
-    static List<Tree> trees;
+    static List<Tree> trees, alived, dead;
 
     public void solution() throws IOException {
         tokenizer = new StringTokenizer(reader.readLine());
@@ -55,7 +56,6 @@ public class three16235 {
 
         map = new int[n][n];
         s2d2 = new int[n][n];
-        treeCount = new int[n][n];
         for (int i = 0; i < n; i++) {
             tokenizer = new StringTokenizer(reader.readLine());
             for (int j = 0; j < n; j++) {
@@ -64,45 +64,29 @@ public class three16235 {
             }
         }
 
-        trees = new LinkedList<>();
+        trees = new ArrayList<>();
         for (int i = 0; i < m; i++) {
             tokenizer = new StringTokenizer(reader.readLine());
             int row = Integer.parseInt(tokenizer.nextToken()) - 1;
             int col = Integer.parseInt(tokenizer.nextToken()) - 1;
             int age = Integer.parseInt(tokenizer.nextToken());
             trees.add(new Tree(row, col, age));
-            treeCount[row][col]++;
         }
 
         while (k --> 0) {
+            alived = new ArrayList<>();
+            dead = new ArrayList<>();
             spring();
             summer();
             fall();
             winter();
+            trees = alived;
         }
 
-        for(Tree tree : trees) {
-            if (tree.alived) answer++;
-        }
-
-        builder.append(answer);
+        builder.append(trees.size());
         writer.write(builder.toString());
         writer.flush();
 
-    }
-
-    private void print() {
-        System.out.println("==========map의 상태==========");
-        for(int[] row : map) {
-            System.out.println(Arrays.toString(row));
-        }
-        System.out.println();
-        System.out.println("===========trees===========");
-        for(Tree tree : trees) {
-            System.out.println(tree.toString());
-        }
-        System.out.println();
-        System.out.println();
     }
 
     /*
@@ -112,40 +96,16 @@ public class three16235 {
     만약, 땅에 양분이 부족해 자신의 나이만큼 양분을 먹을 수 없는 나무는 양분을 먹지 못하고 즉시 죽는다.
      */
     private void spring() {
-        boolean[] visited = new boolean[trees.size()];
+        Collections.sort(trees);
         for (int i = 0; i < trees.size(); i++) {
-            if (visited[i]) continue;
-            int currentRow = trees.get(i).row;
-            int currentCol = trees.get(i).col;
-            List<Tree> candidate = new LinkedList<>();
-            candidate.add(trees.get(i)); // 이번 순회 나무 넣기
-            visited[i] = true;
-
-            if (treeCount[currentRow][currentCol] != 1) { // 그 칸에 나무가 하나가 아니라면
-                for (int j = i + 1; j < trees.size(); j++) { // i 번째 뒤를 돌면서 같은 칸에 있는 나무 넣기
-                    if (trees.get(j).row == currentRow && trees.get(j).col == currentCol) {
-                        candidate.add(trees.get(j));
-                        visited[j] = true;
-                    }
-                }
+            Tree tree = trees.get(i);
+            if (tree.age <= map[tree.row][tree.col]) {
+                map[tree.row][tree.col] -= tree.age;
+                tree.age++;
+                alived.add(new Tree(tree.row, tree.col, tree.age));
             }
-
-            Collections.sort(candidate, new Comparator<Tree>() { // 나이가 어린 순으로 정렬
-                @Override
-                public int compare(Tree o1, Tree o2) {
-                    return Integer.compare(o1.age, o2.age);
-                }
-            });
-
-            for(Tree tree : candidate) {
-                if (map[currentRow][currentCol] < tree.age) {
-                    tree.alived = false;
-                    treeCount[currentRow][currentCol]--;
-                    break;
-                } else {
-                    map[currentRow][currentCol] -= tree.age;
-                    tree.age++;
-                }
+            else {
+                dead.add(new Tree(tree.row, tree.col, tree.age));
             }
         }
     }
@@ -156,17 +116,9 @@ public class three16235 {
     소수점 아래는 버린다.
      */
     private void summer() {
-        List<Tree> deleteList = new LinkedList<>();
-        for (int i = 0; i < trees.size(); i++) {
-            Tree tree = trees.get(i);
-            if (!tree.alived) {
-                map[tree.row][tree.col] += (tree.age / 2);
-                deleteList.add(tree);
-            }
-        }
-
-        for (int i = 0; i < deleteList.size(); i++) {
-            trees.remove(deleteList.get(i));
+        for (int i = 0; i < dead.size(); i++) {
+            Tree tree = dead.get(i);
+            map[tree.row][tree.col] += tree.age / 2;
         }
     }
 
@@ -177,17 +129,15 @@ public class three16235 {
     상도의 땅을 벗어나는 칸에는 나무가 생기지 않는다.
      */
     private void fall() {
-        for (int i = 0; i < trees.size(); i++) {
-            Tree tree = trees.get(i);
+        for (int i = 0; i < alived.size(); i++) {
+            Tree tree = alived.get(i);
             if (tree.age % 5 != 0) continue;
             for (int j = 0; j < 8; j++) {
                 int nextRow = tree.row + deltas[j][0];
                 int nextCol = tree.col + deltas[j][1];
-
                 if (nextRow < 0 || nextRow >= n || nextCol < 0 || nextCol >= n) continue;
 
-                trees.add(new Tree(nextRow, nextCol, 1));
-                treeCount[nextRow][nextCol]++;
+                alived.add(new Tree(nextRow, nextCol, 1));
             }
         }
     }
