@@ -52,7 +52,7 @@ public class four16978 {
     static BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
     static StringBuilder builder = new StringBuilder();
     static StringTokenizer tokenizer;
-    static int n, m, type, oneCount, minOne;
+    static int n, m, type, oneCount;
     static long[] numbers;
     static long[] tree;
     static int index, value;
