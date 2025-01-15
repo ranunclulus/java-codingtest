@@ -1,4 +1,4 @@
-#코드를 입력하세요.
+
 package com.example.javacodingtest.boj.gold;
 
 import java.io.*;
