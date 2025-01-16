@@ -8,7 +8,7 @@ import java.util.*;
  @since 2025.01.15
  @link https://www.acmicpc.net/problem/4179
  @timecomplex
- @performance kb ms
+ @performance 72216kb 548ms
  @category
  @note
  */
