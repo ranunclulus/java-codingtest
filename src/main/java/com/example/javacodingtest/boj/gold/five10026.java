@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
-// https://www.acmicpc.net/problem/10026
 public class five10026 {
     String[][] grid;
     int[][] cowArt;
