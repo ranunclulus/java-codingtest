@@ -11,7 +11,7 @@ import java.util.*;
  @category
  @note
  */
-class Solution {
+class Programmers389480 {
     static int n, m, answer;
     static int[][] info;
     static int[][] dp;
