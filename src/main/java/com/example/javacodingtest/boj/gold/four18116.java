@@ -12,11 +12,11 @@ import java.util.StringTokenizer;
  @since 2025.03.11
  @link https://www.acmicpc.net/problem/18166
  @timecomplex
- @performance
+ @performance 277968KB 1492MS
  @category
  @note
  */
-public class four18166 {
+public class four18116 {
 	static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 	static BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
 	static StringBuilder builder = new StringBuilder();
@@ -73,6 +73,6 @@ public class four18166 {
 	}
 
 	public static void main(String[] args) throws IOException {
-		new four18166().solution();
+		new four18116().solution();
 	}
 }
