@@ -5,7 +5,6 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 /*
@@ -17,7 +16,7 @@ import java.util.StringTokenizer;
  @category
  @note
  */
-public class three23791 {
+public class three23791_2 {
 	static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 	static BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
 	static StringBuilder builder = new StringBuilder();
@@ -90,6 +89,6 @@ public class three23791 {
 	}
 
 	public static void main(String[] args) throws IOException {
-		new three23791().solution();
+		new three23791_2().solution();
 	}
 }
