@@ -9,8 +9,8 @@ import java.util.*;
 
 /*
  @author ranuinclulus
- @since 2025.03.11
- @link https://www.acmicpc.net/problem/2636
+ @since 2025.03.15
+ @link https://www.acmicpc.net/problem/7576
  @timecomplex
  @performance 112808KB 576MS
  @category
