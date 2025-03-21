@@ -11,7 +11,7 @@ import java.util.*;
  @category
  @note
  */
-public class Main {
+public class one17143 {
 
     class Shark {
         int row;
@@ -137,6 +137,6 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
-        new Main().solution();
+        new one17143().solution();
     }
 }
