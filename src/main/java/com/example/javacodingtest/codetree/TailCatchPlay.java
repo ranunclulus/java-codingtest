@@ -191,6 +191,6 @@ public class TailCatchPlay {
 	}
 
 	public static void main(String[] args) throws IOException {
-		new com.example.javacodingtest.codetree.TailCatchPlay().solution();
+		new TailCatchPlay().solution();
 	}
 }
