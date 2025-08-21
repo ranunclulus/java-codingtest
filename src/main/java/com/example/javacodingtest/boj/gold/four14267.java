@@ -17,7 +17,7 @@ public class four14267 {
 	static BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
 	static StringBuilder builder = new StringBuilder();
 	static StringTokenizer tokenizer;
-	static int n;
+
 
   static int n, m;
   static int[] compliments;

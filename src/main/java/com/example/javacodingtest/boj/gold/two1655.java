@@ -50,7 +50,7 @@ public class two1655 {
 	}
 
 	public static void two1655(String[] args) throws IOException {
-		new Main().solution();
+		new two1655().solution();
 	}
 }
 
