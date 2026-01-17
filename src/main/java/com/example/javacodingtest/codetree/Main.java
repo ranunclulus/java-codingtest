@@ -162,7 +162,7 @@ public class Main {
 	}
 
 	public static void main(String[] args) throws IOException {
-		new Main().solution();
+		new RoyalKnightDuel_2().solution();
 	}
 }
 
