@@ -11,7 +11,7 @@ import java.util.*;
  @category
  @note
  */
-public class Main {
+public class BattleGround {
 	class Player {
 		int row;
 		int col;
